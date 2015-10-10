@@ -1,0 +1,89 @@
+apply plugin: 'java'
+
+compileJava {
+    sourceCompatibility=1.7
+    targetCompatibility=1.7
+    options.encoding='UTF-8'
+}
+
+compileTestJava {
+    sourceCompatibility=1.7
+    targetCompatibility=1.7
+    options.encoding='UTF-8'
+}
+
+buildscript {
+
+    repositories {
+        mavenLocal()
+
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
+
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.github.yamingd:argo-apt:1.2"
+    }
+}
+
+description = 'mail service'
+
+subprojects {
+
+    apply plugin: 'maven'
+    apply plugin: 'java'
+    apply plugin: 'signing'
+    apply plugin: 'com.github.yamingd.argo-apt'
+
+    group 'com.github.yamingd.argo'
+    version '2.1'
+
+    repositories {
+
+        mavenLocal()
+
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
+
+        mavenCentral()
+    }
+
+    compileJava {
+        sourceCompatibility=1.7
+        targetCompatibility=1.7
+        options.encoding='UTF-8'
+    }
+
+    compileTestJava {
+        sourceCompatibility=1.7
+        targetCompatibility=1.7
+        options.encoding='UTF-8'
+    }
+
+    dependencies {
+        apt 'com.github.yamingd.argo:processor:2.0'
+        compile 'com.github.yamingd.argo:argo-yaml:1.0'
+        compile 'com.github.yamingd.argo:argo-util:2.0'
+        compile 'com.github.yamingd.argo:argo-service:2.0'
+        compile 'com.github.yamingd.argo:annotations:2.0'
+        compile 'javax.mail:mail:1.4.7'
+        compile 'org.apache.commons:commons-lang3:3.1'
+        compile 'commons-logging:commons-logging:1.2'
+        compile 'org.aspectj:aspectjrt:1.8.6'
+        compile 'org.springframework:spring-tx:3.2.12.RELEASE'
+        compile('org.springframework:spring-context:3.2.11.RELEASE') {
+            exclude(module: 'commons-logging')
+        }
+        compile 'org.springframework:spring-context-support:3.2.11.RELEASE'
+        compile 'com.google.guava:guava:18.0'
+        compile('org.slf4j:slf4j-api:1.7.5') {
+            exclude(module: 'log4j-over-slf4j')
+        }
+        compile 'org.slf4j:jul-to-slf4j:1.5.11'
+        compile 'ch.qos.logback:logback-classic:1.0.13'
+        testCompile 'junit:junit:4.12'
+    }
+}
+
+
+
+

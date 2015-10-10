@@ -1,0 +1,10 @@
+ext {
+    uploadArchive=true
+}
+
+jar{
+    baseName "mail-service"
+}
+
+apply from: '../jarwrap.gradle'
+apply from: '../maven_push.gradle'

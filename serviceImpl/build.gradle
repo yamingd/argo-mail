@@ -1,0 +1,14 @@
+dependencies {
+    compile project(':service')
+}
+
+ext {
+    uploadArchive=true
+}
+
+jar {
+    baseName "mail-serviceImpl"
+}
+
+apply from: '../jarwrap.gradle'
+apply from: '../maven_push.gradle'

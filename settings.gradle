@@ -1,0 +1,4 @@
+rootProject.name = 'argo-mail'
+include 'service'
+include 'serviceImpl'
+

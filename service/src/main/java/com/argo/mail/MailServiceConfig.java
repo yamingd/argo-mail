@@ -4,6 +4,7 @@ import com.argo.yaml.YamlTemplate;
 import com.google.common.base.MoreObjects;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by yamingd on 9/14/15.
@@ -11,6 +12,7 @@ import java.io.IOException;
 public class MailServiceConfig {
 
     private boolean enabled = false;
+    private Integer port = 25;
     private String host;
     private String user;
     private String passwd;
@@ -21,6 +23,8 @@ public class MailServiceConfig {
     private boolean auth;
     private Integer timeout;
     private Integer interval;
+
+    private Map<String, String> props;
 
     public String getHost() {
         return host;
@@ -110,10 +114,27 @@ public class MailServiceConfig {
         this.enabled = enabled;
     }
 
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public Map<String, String> getProps() {
+        return props;
+    }
+
+    public void setProps(Map<String, String> props) {
+        this.props = props;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("host", host)
+                .add("port", port)
                 .add("user", user)
                 .add("passwd", passwd)
                 .add("feedback", feedback)

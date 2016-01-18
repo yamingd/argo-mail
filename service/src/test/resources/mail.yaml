@@ -1,5 +1,6 @@
 host: "smtp.example.com"
 user: "test"
+port: 25
 passwd: "test12345"
 feedback: "feedback@example.com"
 failedLimit: 1
@@ -9,3 +10,6 @@ auth: true
 timeout: 25000
 interval: 1000
 enabled: true
+#props:
+#  mail.smtp.starttls.enable: true
+#  mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory

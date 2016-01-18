@@ -1,14 +1,14 @@
 apply plugin: 'java'
 
 compileJava {
-    sourceCompatibility=1.7
-    targetCompatibility=1.7
+    sourceCompatibility=1.8
+    targetCompatibility=1.8
     options.encoding='UTF-8'
 }
 
 compileTestJava {
-    sourceCompatibility=1.7
-    targetCompatibility=1.7
+    sourceCompatibility=1.8
+    targetCompatibility=1.8
     options.encoding='UTF-8'
 }
 
@@ -36,7 +36,7 @@ subprojects {
     apply plugin: 'com.github.yamingd.argo-apt'
 
     group 'com.github.yamingd.argo'
-    version '2.1'
+    version '2.1.2'
 
     repositories {
 
@@ -48,23 +48,23 @@ subprojects {
     }
 
     compileJava {
-        sourceCompatibility=1.7
-        targetCompatibility=1.7
+        sourceCompatibility=1.8
+        targetCompatibility=1.8
         options.encoding='UTF-8'
     }
 
     compileTestJava {
-        sourceCompatibility=1.7
-        targetCompatibility=1.7
+        sourceCompatibility=1.8
+        targetCompatibility=1.8
         options.encoding='UTF-8'
     }
 
     dependencies {
         apt 'com.github.yamingd.argo:processor:2.0'
-        compile 'com.github.yamingd.argo:argo-yaml:1.0'
-        compile 'com.github.yamingd.argo:argo-util:2.0'
-        compile 'com.github.yamingd.argo:argo-service:2.0'
-        compile 'com.github.yamingd.argo:annotations:2.0'
+        compile 'com.github.yamingd.argo:argo-yaml:1.2'
+        compile 'com.github.yamingd.argo:argo-util:2.1'
+        compile 'com.github.yamingd.argo:argo-service:2.1.1'
+        compile 'com.github.yamingd.argo:annotations:2.2.0'
         compile 'javax.mail:mail:1.4.7'
         compile 'org.apache.commons:commons-lang3:3.1'
         compile 'commons-logging:commons-logging:1.2'

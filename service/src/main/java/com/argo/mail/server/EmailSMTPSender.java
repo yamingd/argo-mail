@@ -18,6 +18,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -48,12 +49,20 @@ public class EmailSMTPSender implements InitializingBean {
         mailSender.setHost(MailServiceConfig.instance.getHost());
         mailSender.setUsername(MailServiceConfig.instance.getUser());
         mailSender.setPassword(MailServiceConfig.instance.getPasswd());
+        mailSender.setPort(MailServiceConfig.instance.getPort());
+
         Properties props = new Properties();
         props.setProperty("mail.smtp.auth", MailServiceConfig.instance.isAuth() + "");
         props.setProperty("mail.smtp.timeout", MailServiceConfig.instance.getTimeout() + "");
 
+        Map<String, String> map = MailServiceConfig.instance.getProps();
+        if (null != map) {
+            props.putAll(map);
+        }
+
         mailSender.setJavaMailProperties(props);
 
+        logger.info("Mail Server. host={}, port={}, user={}", MailServiceConfig.instance.getHost(), MailServiceConfig.instance.getPort(), MailServiceConfig.instance.getUser());
     }
 
     public boolean send(EmailMessage emailMessage) {

@@ -11,5 +11,6 @@ public class MailServiceConfigTest {
     public void testLoad() throws Exception {
         MailServiceConfig.load();
         System.out.println(MailServiceConfig.instance);
+        System.out.println(MailServiceConfig.instance.getProps());
     }
 }

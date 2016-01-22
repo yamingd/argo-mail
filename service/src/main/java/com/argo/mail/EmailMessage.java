@@ -30,6 +30,7 @@ public class EmailMessage implements Serializable {
     public List<String> ccAddress;
     public List<String> bccAddress;
     public Map<String, String> attachments;
+    public String senderNickName;
 
     @Ignore
     public Map<String, Object> params;

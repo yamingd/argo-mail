@@ -23,6 +23,7 @@ public class MailServiceConfig {
     private boolean auth;
     private Integer timeout;
     private Integer interval;
+    private String nickname;
 
     private Map<String, String> props;
 
@@ -128,6 +129,14 @@ public class MailServiceConfig {
 
     public void setProps(Map<String, String> props) {
         this.props = props;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Override

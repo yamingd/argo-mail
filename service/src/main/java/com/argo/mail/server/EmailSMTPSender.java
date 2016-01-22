@@ -1,9 +1,10 @@
 package com.argo.mail.server;
 
 import com.argo.mail.EmailMessage;
-import com.argo.mail.template.EmailTemplateFactory;
 import com.argo.mail.MailServiceConfig;
+import com.argo.mail.template.EmailTemplateFactory;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -90,7 +93,18 @@ public class EmailSMTPSender implements InitializingBean {
                 message = new MimeMessageHelper(msg, false, UTF_8);
             }
 
-            message.setFrom(emailMessage.fromAddress);
+            String nickName = emailMessage.senderNickName;
+            if (Strings.isNullOrEmpty(nickName)) {
+                message.setFrom(emailMessage.fromAddress);
+            }else{
+                try {
+                    nickName=javax.mail.internet.MimeUtility.encodeText(nickName);
+                    msg.setFrom(new InternetAddress(String.format("%s<%s>", nickName, emailMessage.fromAddress)));
+                } catch (UnsupportedEncodingException e) {
+                    logger.error(e.getMessage(), e);
+                    message.setFrom(emailMessage.fromAddress);
+                }
+            }
             message.setSubject(emailMessage.title);
             message.setTo(emailMessage.toAddress.toArray(new String[0]));
 

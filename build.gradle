@@ -36,7 +36,7 @@ subprojects {
     apply plugin: 'com.github.yamingd.argo-apt'
 
     group 'com.github.yamingd.argo'
-    version '2.1.2'
+    version '2.1.4'
 
     repositories {
 

@@ -20,17 +20,40 @@ public class EmailMessage implements Serializable {
 
     public Long id;
     public String category;
-
+    /**
+     * 标题
+     */
     public String title;
+    /**
+     * 主体内容
+     */
     public String body;
     public Integer bodyTemplateId;
+    /**
+     * 格式
+     */
     public String format; //txt, html
+    /**
+     * 来自邮箱
+     */
     public String fromAddress;
     public List<String> toAddress;
     public List<String> ccAddress;
     public List<String> bccAddress;
     public Map<String, String> attachments;
+
+    /**
+     * 发送邮箱
+     */
+    public String senderAddress;
+    /**
+     * 发送人昵称
+     */
     public String senderNickName;
+    /**
+     * 发送邮箱密码
+     */
+    public String senderPassword;
 
     @Ignore
     public Map<String, Object> params;

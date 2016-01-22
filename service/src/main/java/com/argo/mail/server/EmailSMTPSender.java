@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by yaming_deng on 14-8-27.
@@ -36,7 +37,9 @@ public class EmailSMTPSender implements InitializingBean {
     public static final String STATUS_FAILED = "failed";
     public static final String STATUS_SUCCESS = "success";
 
-    private JavaMailSenderImpl mailSender = null;
+    private JavaMailSenderImpl defaultMailSender = null;
+
+    private ConcurrentHashMap<String, JavaMailSenderImpl> senders = new ConcurrentHashMap<String, JavaMailSenderImpl>();
 
     @Autowired
     private EmailTemplateFactory templateFactory;
@@ -46,13 +49,31 @@ public class EmailSMTPSender implements InitializingBean {
 
         MailServiceConfig.load();
 
-        mailSender = new JavaMailSenderImpl();
+        defaultMailSender = buildMailSender(MailServiceConfig.instance.getUser(), MailServiceConfig.instance.getPasswd());
 
+        logger.info("Mail Server. host={}, port={}, user={}", MailServiceConfig.instance.getHost(), MailServiceConfig.instance.getPort(), MailServiceConfig.instance.getUser());
+    }
+
+    /**
+     * 新建MailSender
+     * @param user
+     * @param passwd
+     * @return
+     */
+    public JavaMailSenderImpl buildMailSender(String user, String passwd) {
+
+        JavaMailSenderImpl mailSender = senders.get(user);
+        if (null != mailSender){
+            return mailSender;
+        }
+
+        mailSender = new JavaMailSenderImpl();
         mailSender.setDefaultEncoding(UTF_8);
         mailSender.setHost(MailServiceConfig.instance.getHost());
-        mailSender.setUsername(MailServiceConfig.instance.getUser());
-        mailSender.setPassword(MailServiceConfig.instance.getPasswd());
         mailSender.setPort(MailServiceConfig.instance.getPort());
+
+        mailSender.setUsername(user);
+        mailSender.setPassword(passwd);
 
         Properties props = new Properties();
         props.setProperty("mail.smtp.auth", MailServiceConfig.instance.isAuth() + "");
@@ -65,9 +86,16 @@ public class EmailSMTPSender implements InitializingBean {
 
         mailSender.setJavaMailProperties(props);
 
-        logger.info("Mail Server. host={}, port={}, user={}", MailServiceConfig.instance.getHost(), MailServiceConfig.instance.getPort(), MailServiceConfig.instance.getUser());
+        senders.putIfAbsent(user, mailSender);
+
+        return mailSender;
     }
 
+    /**
+     * 发送邮件
+     * @param emailMessage
+     * @return
+     */
     public boolean send(EmailMessage emailMessage) {
 
         Preconditions.checkNotNull(emailMessage.title, "emailMessage.title should not be null");
@@ -83,6 +111,8 @@ public class EmailSMTPSender implements InitializingBean {
             }
         }
 
+        JavaMailSenderImpl mailSender = buildMailSender(emailMessage.senderAddress, emailMessage.senderPassword);
+
         try {
 
             MimeMessage msg = mailSender.createMimeMessage();
@@ -95,14 +125,14 @@ public class EmailSMTPSender implements InitializingBean {
 
             String nickName = emailMessage.senderNickName;
             if (Strings.isNullOrEmpty(nickName)) {
-                message.setFrom(emailMessage.fromAddress);
+                message.setFrom(emailMessage.senderAddress);
             }else{
                 try {
                     nickName=javax.mail.internet.MimeUtility.encodeText(nickName);
-                    msg.setFrom(new InternetAddress(String.format("%s<%s>", nickName, emailMessage.fromAddress)));
+                    msg.setFrom(new InternetAddress(String.format("%s<%s>", nickName, emailMessage.senderAddress)));
                 } catch (UnsupportedEncodingException e) {
                     logger.error(e.getMessage(), e);
-                    message.setFrom(emailMessage.fromAddress);
+                    message.setFrom(emailMessage.senderAddress);
                 }
             }
             message.setSubject(emailMessage.title);

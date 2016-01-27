@@ -36,7 +36,7 @@ subprojects {
     apply plugin: 'com.github.yamingd.argo-apt'
 
     group 'com.github.yamingd.argo'
-    version '2.1.5'
+    version '2.1.6'
 
     repositories {
 
@@ -63,7 +63,6 @@ subprojects {
         apt 'com.github.yamingd.argo:processor:2.0'
         compile 'com.github.yamingd.argo:argo-yaml:1.2'
         compile 'com.github.yamingd.argo:argo-util:2.1'
-        compile 'com.github.yamingd.argo:argo-service:2.1.1'
         compile 'com.github.yamingd.argo:annotations:2.2.0'
         compile 'javax.mail:mail:1.4.7'
         compile 'org.apache.commons:commons-lang3:3.1'
